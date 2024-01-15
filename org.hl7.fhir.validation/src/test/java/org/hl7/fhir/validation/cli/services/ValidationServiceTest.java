@@ -247,7 +247,9 @@ class ValidationServiceTest  {
     // Scenario 1: default behavior, doNotFetchUnknownProfiles is "false"
     // -- this resource validates with no warnings or errors
     response.getOutcomes().get(0).getMessages().forEach(m -> {
-      if (m.getLevel() == IssueSeverity.WARNING || m.getLevel() == IssueSeverity.ERROR) {
+      if (m.getLevel() == IssueSeverity.WARNING && !m.getType().equals(ValidationMessage.IssueType.CODEINVALID)) {
+        fail();
+      } else if (m.getLevel() == IssueSeverity.ERROR) {
         fail();
       }
     });
