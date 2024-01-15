@@ -1720,7 +1720,7 @@ public class FHIRPathEngine {
       return new ArrayList<Base>(Arrays.asList(context.focusResource));
     } else if (s.equals("%rootResource")) {
       if (context.rootResource == null) {
-        throw makeException(expr, I18nConstants.FHIRPATH_CANNOT_USE, "%rootResource", "no focus resource");
+        throw makeException(expr, I18nConstants.FHIRPATH_CANNOT_USE, "%rootResource", "no focus rootResource");
       }
       return new ArrayList<Base>(Arrays.asList(context.rootResource));
     } else if (s.equals("%context")) {
@@ -1779,7 +1779,7 @@ public class FHIRPathEngine {
         case 'u':
           i++;
           int uc = Integer.parseInt(s.substring(i, i+4), 16);
-          b.append((char) uc);
+          b.append(Character.toString(uc));
           i = i + 3;
           break;
         default:
@@ -3092,7 +3092,7 @@ public class FHIRPathEngine {
       return new TypeDetails(CollectionStatus.SINGLETON, context.resource);
     } else if (s.equals("%rootResource")) {
       if (context.resource == null) {
-        throw makeException(expr, I18nConstants.FHIRPATH_CANNOT_USE, "%rootResource", "no focus resource");
+        throw makeException(expr, I18nConstants.FHIRPATH_CANNOT_USE, "%rootResource", "no focus rootResource");
       }
       return new TypeDetails(CollectionStatus.SINGLETON, context.resource);
     } else if (s.equals("%context")) {
