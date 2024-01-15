@@ -4,16 +4,8 @@ import static org.hl7.fhir.validation.tests.utilities.TestUtilities.getTerminolo
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.AdditionalMatchers.and;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.endsWith;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isNull;
-import static org.mockito.ArgumentMatchers.startsWith;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -224,8 +216,14 @@ class ValidationServiceTest  {
   }
 
   @Test
-  @DisplayName("Test that CliContext.doNotFetchUnknownProfiles is handled correctly")
-  public void testDoNotFetchUnknownProfiles() throws Exception {
+  @DisplayName("Test that CliContext.doNotFetchUnknownProfiles correctly instantiates null fetcher")
+  public void testDoNotFetchUnknownProfiles() {
+
+  }
+
+  @Test
+  @DisplayName("IT that CliContext.doNotFetchUnknownProfiles is handled correctly")
+  public void testDoNotFetchUnknownProfilesIt() throws Exception {
     TestingUtilities.injectCorePackageLoader();
     ValidationService myService = new ValidationService();
 
@@ -306,12 +304,50 @@ class ValidationServiceTest  {
 
     final SimpleWorkerContext workerContext = mock(SimpleWorkerContext.class);
 
-    final ValidationEngine validationEngine = mock(ValidationEngine.class);
-    when(validationEngine.getContext()).thenReturn(workerContext);
+    final ValidationEngine mockValidationEngine = mock(ValidationEngine.class);
+    when(mockValidationEngine.getContext()).thenReturn(workerContext);
 
-   final ValidationEngine.ValidationEngineBuilder validationEngineBuilder = mock(ValidationEngine.ValidationEngineBuilder.class);;
+   final ValidationEngine.ValidationEngineBuilder mockValidationEngineBuilder = mock(ValidationEngine.ValidationEngineBuilder.class);;
 
-    final ValidationService validationService = new ValidationService() {
+    final ValidationService validationService = createFakeValidationService(mockValidationEngineBuilder, mockValidationEngine);
+
+    CliContext cliContext = new CliContext();
+
+    validationService.buildValidationEngine(cliContext, null, timeTracker);
+
+    verify(mockValidationEngine).setFetcher(notNull());
+
+    verify(mockValidationEngineBuilder).withUserAgent(eq("fhir/validator/" + VersionUtil.getVersion()));
+
+  }
+
+  @Test
+  public void buildValidationEngineDoNotFetchUnknownProfilesTest() throws IOException, URISyntaxException {
+
+    final org.hl7.fhir.utilities.TimeTracker timeTracker = mock(org.hl7.fhir.utilities.TimeTracker.class);
+
+    final SimpleWorkerContext workerContext = mock(SimpleWorkerContext.class);
+
+    final ValidationEngine mockValidationEngine = mock(ValidationEngine.class);
+    when(mockValidationEngine.getContext()).thenReturn(workerContext);
+
+    final ValidationEngine.ValidationEngineBuilder mockValidationEngineBuilder = mock(ValidationEngine.ValidationEngineBuilder.class);;
+
+    final ValidationService validationService = createFakeValidationService(mockValidationEngineBuilder, mockValidationEngine);
+
+    CliContext cliContext = new CliContext();
+    cliContext.setDoNotFetchUnknownProfiles(true);
+
+    validationService.buildValidationEngine(cliContext, null, timeTracker);
+
+    verify(mockValidationEngine, never()).setFetcher(any());
+
+    verify(mockValidationEngineBuilder).withUserAgent(eq("fhir/validator/" + VersionUtil.getVersion()));
+
+  }
+
+  private static ValidationService createFakeValidationService(ValidationEngine.ValidationEngineBuilder validationEngineBuilder, ValidationEngine validationEngine) {
+    return new ValidationService() {
       @Override
       protected ValidationEngine.ValidationEngineBuilder getValidationEngineBuilder() {
         when(validationEngineBuilder.withTHO(anyBoolean())).thenReturn(validationEngineBuilder);
@@ -333,11 +369,5 @@ class ValidationServiceTest  {
         //Don't care. Do nothing.
       }
     };
-
-    CliContext cliContext = new CliContext();
-
-    validationService.buildValidationEngine(cliContext, null, timeTracker);
-
-    verify(validationEngineBuilder).withUserAgent(eq("fhir/validator/" + VersionUtil.getVersion()));
   }
 }
