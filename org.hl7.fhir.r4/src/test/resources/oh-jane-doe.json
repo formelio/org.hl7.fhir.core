@@ -1,0 +1,170 @@
+{
+  "resourceType": "Patient",
+  "id": "a0df9da6-3157-4b72-95f1-729853718c11",
+  "name": [
+    {
+      "family": "Poirier2",
+      "given": [
+        "Jane",
+        "Margaret"
+      ]
+    }
+  ],
+  "birthDate": "1975-02-19",
+  "_birthDate": {
+    "extension": [
+      {
+        "url": "http://ontariohealth.ca/fhir/StructureDefinition/ca-on-ext-birthdate-estimated-flag",
+        "valueBoolean": true
+      }
+    ]
+  },
+  "address": [
+    {
+      "use": "home",
+      "type": "physical",
+      "line": [
+        "534 Treeglen St"
+      ],
+      "city": "Waterloo",
+      "state": "MB",
+      "postalCode": "N2L 3G1"
+    }
+  ],
+  "maritalStatus": {
+    "coding": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus",
+        "code": "A",
+        "display": "Annulled"
+      }
+    ]
+  },
+  "communication": [
+    {
+      "extension": [
+        {
+          "url": "http://ontariohealth.ca/fhir/StructureDefinition/ca-on-mha-ext-LanguageUse",
+          "valueCodeableConcept": {
+            "coding": [
+              {
+                "system": "http://snomed.info/sct",
+                "code": "224075005",
+                "display": "Mother tongue"
+              }
+            ]
+          }
+        }
+      ],
+      "language": {
+        "coding": [
+          {
+            "system": "urn:ietf:bcp:47",
+            "code": "emu",
+            "display": "Eastern Muria"
+          }
+        ]
+      }
+    },
+    {
+      "extension": [
+        {
+          "url": "http://ontariohealth.ca/fhir/StructureDefinition/ca-on-mha-ext-LanguageUse",
+          "valueCodeableConcept": {
+            "coding": [
+              {
+                "system": "http://snomed.info/sct",
+                "code": "224075005",
+                "display": "Mother tongue"
+              }
+            ]
+          }
+        }
+      ],
+      "language": {
+        "coding": [
+          {
+            "system": "urn:ietf:bcp:47",
+            "code": "aaf",
+            "display": "Aranadan"
+          }
+        ]
+      }
+    },
+    {
+      "extension": [
+        {
+          "url": "http://ontariohealth.ca/fhir/StructureDefinition/ca-on-mha-ext-LanguageUse",
+          "valueCodeableConcept": {
+            "coding": [
+              {
+                "system": "http://ontariohealth.ca/fhir/CodeSystem/LanguageUse",
+                "code": "OFL",
+                "display": "Official Language"
+              }
+            ]
+          }
+        }
+      ],
+      "language": {
+        "coding": [
+          {
+            "system": "urn:ietf:bcp:47",
+            "code": "en",
+            "display": "English"
+          }
+        ]
+      }
+    },
+    {
+      "extension": [
+        {
+          "url": "http://ontariohealth.ca/fhir/StructureDefinition/ca-on-mha-ext-LanguageUse",
+          "valueCodeableConcept": {
+            "coding": [
+              {
+                "system": "http://snomed.info/sct",
+                "code": "428996008",
+                "display": "Language preference"
+              }
+            ]
+          }
+        }
+      ],
+      "language": {
+        "coding": [
+          {
+            "system": "urn:ietf:bcp:47",
+            "code": "fr",
+            "display": "French"
+          }
+        ]
+      }
+    },
+    {
+      "extension": [
+        {
+          "url": "http://ontariohealth.ca/fhir/StructureDefinition/ca-on-mha-ext-LanguageUse",
+          "valueCodeableConcept": {
+            "coding": [
+              {
+                "system": "http://snomed.info/sct",
+                "code": "428996008",
+                "display": "Language preference"
+              }
+            ]
+          }
+        }
+      ],
+      "language": {
+        "coding": [
+          {
+            "system": "urn:ietf:bcp:47",
+            "code": "en",
+            "display": "English"
+          }
+        ]
+      }
+    }
+  ]
+}

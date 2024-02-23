@@ -4,6 +4,7 @@ import org.apache.commons.lang3.NotImplementedException;
 import org.fhir.ucum.UcumException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.PathEngineException;
+import org.hl7.fhir.r4.formats.JsonParser;
 import org.hl7.fhir.r4.formats.XmlParser;
 import org.hl7.fhir.r4.model.*;
 import org.hl7.fhir.r4.test.utils.TestingUtilities;
@@ -133,7 +134,7 @@ public class FHIRPathTests {
 
 
   @SuppressWarnings("deprecation")
-  @Disabled
+
   @ParameterizedTest(name = "{index}: file {0}")
   @MethodSource("data")
   public void test(String name, Element test) throws FileNotFoundException, IOException, FHIRException, org.hl7.fhir.exceptions.FHIRException, UcumException {
@@ -153,7 +154,7 @@ public class FHIRPathTests {
       else {
         res = resources.get(input);
         if (res == null) {
-          res = new XmlParser().parse(new FileInputStream(TestingUtilities.resourceNameToFile(input)));
+          res = new JsonParser().parse(new FileInputStream(TestingUtilities.resourceNameToFile(input)));
           resources.put(input, res);
         }
         fp.check(res, res.getResourceType().toString(), res.getResourceType().toString(), node);
