@@ -77,17 +77,17 @@ public class XmlParser extends ParserBase {
 		super(context);
 	}
 
-	public Element parse(InputStream stream) throws Exception {
-		Document doc = null;
-		try {
-			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-			// xxe protection
-			factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
-			factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
-			factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-			factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-			factory.setXIncludeAware(false);
-			factory.setExpandEntityReferences(false);
+  public Element parse(InputStream stream) throws Exception {
+    Document doc = null;
+    try {
+      DocumentBuilderFactory factory = XMLUtil.newXXEProtectedDocumentBuilderFactory();
+      // xxe protection
+      factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+      factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+      factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+      factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+      factory.setXIncludeAware(false);
+      factory.setExpandEntityReferences(false);
 
 			factory.setNamespaceAware(true);
 			if (policy == ValidationPolicy.EVERYTHING) {

@@ -70,8 +70,9 @@ public class Translations {
    * @throws ParserConfigurationException 
    * @throws Exception
    */
-  public void load(String filename) throws FileNotFoundException, SAXException, IOException, ParserConfigurationException {
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+  public void load(String filename)
+      throws FileNotFoundException, SAXException, IOException, ParserConfigurationException {
+    DocumentBuilderFactory factory = XMLUtil.newXXEProtectedDocumentBuilderFactory();
     DocumentBuilder builder = factory.newDocumentBuilder();
     loadMessages(builder.parse(new CSFileInputStream(filename)));
   }

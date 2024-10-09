@@ -110,37 +110,38 @@ public class XmlParser extends ParserBase {
 
   public List<NamedElement> parse(InputStream stream) throws FHIRFormatError, DefinitionException, FHIRException, IOException {
     List<NamedElement> res = new ArrayList<>();
-		Document doc = null;
-  	try {
-  		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-  		// xxe protection
-  		factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
-  		factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
-  		factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-  		factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-  		factory.setXIncludeAware(false);
-  		factory.setExpandEntityReferences(false);
-  			
-  		factory.setNamespaceAware(true);
-  		if (policy == ValidationPolicy.EVERYTHING) {
-  		  // The SAX interface appears to not work when reporting the correct version/encoding.
-  		  // if we can, we'll inspect the header/encoding ourselves 
-  		  if (stream.markSupported()) {
-  		    stream.mark(1024);
-  		    version = checkHeader(stream);
-  		    stream.reset();
-  		  }
-  			// use a slower parser that keeps location data
-  			TransformerFactory transformerFactory = TransformerFactory.newInstance();
-  			Transformer nullTransformer = transformerFactory.newTransformer();
-  			DocumentBuilder docBuilder = factory.newDocumentBuilder();
-  			doc = docBuilder.newDocument();
-  			DOMResult domResult = new DOMResult(doc);
-  			SAXParserFactory spf = SAXParserFactory.newInstance();
-  			spf.setNamespaceAware(true);
-  			spf.setValidating(false);
-    		// xxe protection
-  		  spf.setFeature("http://xml.org/sax/features/external-general-entities", false);
+    Document doc = null;
+    try {
+      DocumentBuilderFactory factory = XMLUtil.newXXEProtectedDocumentBuilderFactory();
+      // xxe protection
+      factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+      factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+      factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+      factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+      factory.setXIncludeAware(false);
+      factory.setExpandEntityReferences(false);
+
+      factory.setNamespaceAware(true);
+      if (policy == ValidationPolicy.EVERYTHING) {
+        // The SAX interface appears to not work when reporting the correct
+        // version/encoding.
+        // if we can, we'll inspect the header/encoding ourselves
+        if (stream.markSupported()) {
+          stream.mark(1024);
+          version = checkHeader(stream);
+          stream.reset();
+        }
+        // use a slower parser that keeps location data
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer nullTransformer = transformerFactory.newTransformer();
+        DocumentBuilder docBuilder = factory.newDocumentBuilder();
+        doc = docBuilder.newDocument();
+        DOMResult domResult = new DOMResult(doc);
+        SAXParserFactory spf = SAXParserFactory.newInstance();
+        spf.setNamespaceAware(true);
+        spf.setValidating(false);
+        // xxe protection
+        spf.setFeature("http://xml.org/sax/features/external-general-entities", false);
         spf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
   			SAXParser saxParser = spf.newSAXParser();
   			XMLReader xmlReader = saxParser.getXMLReader();
